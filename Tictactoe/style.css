@@ -11,18 +11,24 @@ body {
     align-items: center;
     height: 100vh;
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #ff6b6b, #f8d7a1);
+    background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
 }
 
 #game {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: 2px dashed #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
 h1 {
     color: #fff;
     font-size: 2.5em;
     margin-bottom: 20px;
-    text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 #board {
@@ -36,7 +42,7 @@ h1 {
 .cell {
     width: 100px;
     height: 100px;
-    background-color: #fff;
+    background-color: #222;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -45,41 +51,52 @@ h1 {
     color: #ff6b6b;
     cursor: pointer;
     border-radius: 8px;
-    box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .cell:hover {
-    background-color: #f3f3f3;
+    background-color: #333;
     transform: scale(1.05);
 }
 
 .cell.x {
-    color: #007aff;
+    color: #28a745; /* Vert élégant pour X */
 }
 
 .cell.o {
-    color: #ff6b6b;
+    color: #dc3545; /* Rouge élégant pour O */
 }
 
 .winner .cell {
-    background-color: #a1f0d7 !important;
-    animation: blink 0.3s ease-in-out infinite alternate;
+    background-color: #444 !important;
+    animation: blink 0.6s ease-in-out infinite alternate;
 }
 
 @keyframes blink {
-    from {
+    0% {
         opacity: 1;
     }
-    to {
+    50% {
         opacity: 0.6;
+    }
+    100% {
+        opacity: 1;
     }
 }
 
+#controls {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 10px;
+    padding: 5px;
+}
+
 #restartButton {
-    margin-top: 20px;
     padding: 10px 20px;
-    background-color: #ff6b6b;
+    background-color: #dc3545;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -90,4 +107,20 @@ h1 {
 
 #restartButton:hover {
     background-color: #ff4d4d;
+}
+
+#turn {
+    cursor: pointer;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #fff;
+    transition: color 0.3s ease;
+}
+
+#turn.x-turn {
+    color: #28a745; /* Vert élégant pour le joueur X */
+}
+
+#turn.o-turn {
+    color: #dc3545; /* Rouge élégant pour le joueur O */
 }

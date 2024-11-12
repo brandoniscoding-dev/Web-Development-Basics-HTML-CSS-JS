@@ -2,19 +2,10 @@ const board = document.querySelectorAll('.cell');
 const restartButton = document.getElementById('restartButton');
 let currentPlayer = 'X';
 let isGameOver = false;
+let turn = document.getElementById('turn');
 
 /**
  * Checks for a winning combination on the game board.
- *
- * @returns {Array|null} - Returns the winning combination if found, otherwise returns null.
- *
- * @example
- * const winningCombination = checkWin();
- * if (winningCombination) {
- *     console.log(`Winning combination: ${winningCombination}`);
- * } else {
- *     console.log('No winning combination found');
- * }
  */
 function checkWin() {
     const winningCombinations = [
@@ -38,54 +29,54 @@ function checkWin() {
 }
 
 /**
+ * Updates the turn indicator to display the current player's turn.
+ */
+function gameTurn() {
+    if (currentPlayer === 'X') {
+        turn.textContent = 'Turn of X';
+        turn.style.color = '#28a745';
+    } else {
+        turn.textContent = 'Turn of O';
+        turn.style.color = '#dc3545';
+    }
+}
+
+/**
  * Handles the click event on each game board cell.
- * Places the current player's symbol in the clicked cell, checks for a win or a draw,
- * and switches the current player.
- *
- * @param {Event} event - The click event object.
  */
 board.forEach(cell => {
     cell.addEventListener('click', () => {
-        // Check if the cell is empty and the game is not over
         if (!cell.textContent && !isGameOver) {
-            // Place the current player's symbol in the clicked cell
             cell.textContent = currentPlayer;
             cell.classList.add(currentPlayer === 'X' ? 'x' : 'o');
 
-            // Check for a win
             if (checkWin()) {
-                // Set the game status to over
                 isGameOver = true;
-                // Display a winning alert after a slight delay
                 setTimeout(() => alert(`${currentPlayer} a gagné !`), 200);
             } else if ([...board].every(cell => cell.textContent)) {
-                // Set the game status to over
                 isGameOver = true;
-                // Display a draw alert after a slight delay
                 setTimeout(() => alert("Match nul !"), 200);
             }
 
-            // Switch the current player
+            // Switch the current player and update the turn display
             currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            gameTurn();  // Mise à jour du texte du tour après changement de joueur
         }
     });
 });
 
 /**
  * Handles the restart button click event.
- * Resets the game board, removes player symbols and winner styles,
- * and sets the current player to 'X' and the game status to not over.
  */
 restartButton.addEventListener('click', () => {
-    // Iterate over each cell on the game board
     board.forEach(cell => {
-        // Clear the cell text content
         cell.textContent = '';
-        // Remove player symbols and winner styles
         cell.classList.remove('x', 'o', 'winner');
     });
-    // Set the current player to 'X'
     currentPlayer = 'X';
-    // Set the game status to not over
     isGameOver = false;
+    gameTurn();  // Mise à jour du texte du tour au redémarrage du jeu
 });
+
+// Initial call to display the starting player
+gameTurn();
