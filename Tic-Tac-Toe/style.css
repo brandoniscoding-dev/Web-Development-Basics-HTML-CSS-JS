@@ -15,14 +15,44 @@ body {
 }
 
 #game {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    border: 2px dashed #fff;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    overflow: hidden; /* Pour éviter que l'animation dépasse */
 }
+
+#game::before {
+    content: '';
+    position: absolute;
+    top: -5px; left: -5px; right: -5px; bottom: -5px;
+    background: linear-gradient(180deg, #28a745, #dc3545);
+    border-radius: 15px;
+    z-index: -1;
+    animation: rotateBorder 5s linear infinite;
+}
+
+@keyframes rotateBorder {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+#game::after {
+    content: '';
+    position: absolute;
+    top: 5px; left: 5px; right: 5px; bottom: 5px;
+    background: #07182E;
+    border-radius: 10px;
+    z-index: -1;
+}
+
 
 h1 {
     color: #fff;
@@ -61,11 +91,11 @@ h1 {
 }
 
 .cell.x {
-    color: #28a745; /* Vert élégant pour X */
+    color: #28a745;
 }
 
 .cell.o {
-    color: #dc3545; /* Rouge élégant pour O */
+    color: #dc3545;
 }
 
 .winner .cell {
@@ -118,9 +148,9 @@ h1 {
 }
 
 #turn.x-turn {
-    color: #28a745; /* Vert élégant pour le joueur X */
+    color: #28a745;
 }
 
 #turn.o-turn {
-    color: #dc3545; /* Rouge élégant pour le joueur O */
+    color: #dc3545;
 }
