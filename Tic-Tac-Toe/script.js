@@ -1,12 +1,28 @@
+// Chargement des fichiers audio
+const clickSound = new Audio('sounds/click.mp3');
+const winSound = new Audio('sounds/win.mp3');
+const tieSound = new Audio('sounds/tie.mp3');
+
 const board = document.querySelectorAll('.cell');
 const restartButton = document.getElementById('restartButton');
 let currentPlayer = 'X';
 let isGameOver = false;
 let turn = document.getElementById('turn');
 
-/**
- * Checks for a winning combination on the game board.
- */
+// Fonction pour jouer le son de clic sur chaque case
+function playClickSound() {
+    clickSound.play();
+}
+
+// Fonction pour jouer le son de victoire ou de match nul
+function playEndSound(isTie) {
+    if (isTie) {
+        tieSound.play();
+    } else {
+        winSound.play();
+    }
+}
+
 function checkWin() {
     const winningCombinations = [
         [0, 1, 2], [3, 4, 5], [6, 7, 8], 
@@ -28,9 +44,6 @@ function checkWin() {
     });
 }
 
-/**
- * Updates the turn indicator to display the current player's turn.
- */
 function gameTurn() {
     if (currentPlayer === 'X') {
         turn.textContent = 'Turn of X';
@@ -41,33 +54,32 @@ function gameTurn() {
     }
 }
 
-/**
- * Handles the click event on each game board cell.
- */
+// Ajout de l'événement de clic pour chaque cellule du plateau
 board.forEach(cell => {
     cell.addEventListener('click', () => {
         if (!cell.textContent && !isGameOver) {
             cell.textContent = currentPlayer;
             cell.classList.add(currentPlayer === 'X' ? 'x' : 'o');
+            
+            // Joue le son de clic
+            playClickSound();
 
             if (checkWin()) {
                 isGameOver = true;
+                playEndSound(false);  // Son de victoire
                 setTimeout(() => alert(`${currentPlayer} a gagné !`), 200);
             } else if ([...board].every(cell => cell.textContent)) {
                 isGameOver = true;
+                playEndSound(true);  // Son de match nul
                 setTimeout(() => alert("Match nul !"), 200);
             }
 
-            // Switch the current player and update the turn display
             currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-            gameTurn();  // Mise à jour du texte du tour après changement de joueur
+            gameTurn();
         }
     });
 });
 
-/**
- * Handles the restart button click event.
- */
 restartButton.addEventListener('click', () => {
     board.forEach(cell => {
         cell.textContent = '';
@@ -75,8 +87,7 @@ restartButton.addEventListener('click', () => {
     });
     currentPlayer = 'X';
     isGameOver = false;
-    gameTurn();  // Mise à jour du texte du tour au redémarrage du jeu
+    gameTurn();
 });
 
-// Initial call to display the starting player
 gameTurn();
